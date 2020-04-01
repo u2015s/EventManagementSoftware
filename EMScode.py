@@ -8,7 +8,7 @@ import datetime
 from xlrd import *
 from xlsxwriter import *
 
-ui,_ = loadUiType('EMS-gui.ui')
+ui,_ = loadUiType('ems.ui')
 
 def start():
     global m
