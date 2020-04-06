@@ -3604,8 +3604,6 @@ border-image: url(:/back-button.png);</string>
    <addaction name="menuHelp"/>
   </widget>
  </widget>
-  <resources>
-  <include location="Resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -2,36 +2,88 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sys
-#import MySQLdb
+import MySQLdb
 from PyQt5.uic import loadUiType
 import datetime
 from xlrd import *
 from xlsxwriter import *
 
-ui,_ = loadUiType('ems.ui')
+
+
+ui,_ = loadUiType('s1_designation.ui')
+
 
 def start():
     global m
     m = MainApp()
     m.show()
+    
+def ConnectDatabase():
+        try:
+            global cur
+            conn = MySQLdb.connect(host='emsdatabase.cihtsb96tcbg.ap-south-1.rds.amazonaws.com' , user='mainbanda' , password ='mainbanda' , db='EMS_DB')
+            cur = conn.cursor()            
+            print("db connected")
+        except:
+            print("not connected")
+         
 
 ch1='X'
 ch='X'
+cur={}
+
+class MyTableModel(QAbstractTableModel):
+    def __init__(self, datain, headerdata ,parent=None, *args):
+            QAbstractTableModel.__init__(self, parent, *args)
+            self.arraydata = datain
+            self.headerdata = headerdata
+    def rowCount(self, parent):
+            return len(self.arraydata)
+    
+    def columnCount(self, parent):
+            return len(self.arraydata[0])
+    
+    def data(self, index, role):
+            if not index.isValid():
+                return QVariant()
+            elif role != Qt.DisplayRole:
+                return QVariant()
+            return QVariant(self.arraydata[index.row()][index.column()])
+    def headerData(self, col, orientation, role):
+            if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+                return QVariant(self.headerdata[col])
+            return QVariant()
+
 
 class MainApp(QMainWindow , ui):
-    def __init__(self):
+    def __init__(self): 
         QMainWindow.__init__(self)
         self.setupUi(self)
         if ((self.stackedWidget.currentIndex() == 0) or (self.stackedWidget.currentIndex() == 1)):
             self.signout_button.setVisible(False)
             self.changepass_button.setVisible(False)
-
+                  
         self.Handel_Buttons()
-    
+   
+            
+
 
     def Handel_Buttons(self):
         self.pushButton_7.clicked.connect(self.f9)    
         self.pushButton_ok.clicked.connect(self.f8)
+        
+        
+#--------------------------------------------------------------------------------------------------------------------------        
+#Different types of lineedit and all
+      #  self.lineEdit_input_password.
+        
+        
+        
+        
+        
+        
+        
+        
 #--------------------------------------------------------------------------------------------------------------------------
 #below are pushbuttons under afterlogin screens(i.e.,chosing tables by different users)  
         self.admin_login_eventbutton.clicked.connect(self.f10)
@@ -56,7 +108,7 @@ class MainApp(QMainWindow , ui):
         self.EM_login_venuebutton.clicked.connect(self.f25)
 #--------------------------------------------------------------------------------------------------------------------------
 #below are pushbuttons under options screen for tables(except user table)
-        self.user_login_table_viewbutton.clicked.connect(lambda :self.stackedWidget.setCurrentIndex(24))
+        self.user_login_table_viewbutton.clicked.connect(self.f27)
         self.user_login_table_deletebutton.clicked.connect(lambda :self.stackedWidget.setCurrentIndex(17))
         self.user_login_table_printbutton.clicked.connect(lambda :self.stackedWidget.setCurrentIndex(16))
         self.user_login_table_updatebutton.clicked.connect(self.f6)
@@ -110,66 +162,83 @@ class MainApp(QMainWindow , ui):
 # ----------------------------------------------------------------------------------------------------------------------------
 # all definitions
     def f9(self):
-        username = self.comboBox_input_username.currentText()
-        password = self.comboBox_input_password.currentText()
+        username = self.comboBox_input_username.currentText()#'A001'
+        password = self.lineEdit_input_password.text()#'utkarsh'
 
-        if(username ==  "admin" and password == "admin"):
-            global ch1
-            ch1 = 'A'
-            QMessageBox.information(self,"Login Status", "you are logged in successfully")
-            self.stackedWidget.setCurrentIndex(2)
-
-        elif(username ==  "receptionist" and password == "receptionist"):
-            ch1='R'
-            QMessageBox.information(self,"Login Status", "you are logged in successfully")
-            self.stackedWidget.setCurrentIndex(5)
-        elif(username ==  "staff" and password == "staff"):
-            ch1='S'
-            QMessageBox.information(self,"Login Status", "you are logged in successfully")
-            self.stackedWidget.setCurrentIndex(3)
-        elif(username ==  "eventmanager" and password == "eventmanager"):
-            ch1='E'
-            QMessageBox.information(self,"Login Status", "you are logged in successfully")
-            self.stackedWidget.setCurrentIndex(6)
-        elif(username ==  "inventory" and password == "inventory"):
-            ch1='I'
-            QMessageBox.information(self,"Login Status", "you are logged in successfully")
-            self.stackedWidget.setCurrentIndex(4)
+        if(username and password):
+            cur.execute('''SELECT * FROM EMS_DB.Users''' )
+            data = cur.fetchall()
+            for row in data  :
+                if(username == row[0] and password == row[3]):
+                    #print('user match')
+                    type = row[2]
+                    global ch1 
+                    ch1= type[:1]
+                    if(ch1):#this function can be optimized using loops and list
+                        QMessageBox.information(self,"Login Status", "you are logged in successfully")
+                        if(ch1=='A'):
+                            self.stackedWidget.setCurrentIndex(2)                            
+                        elif(ch1=='R'):
+                            self.stackedWidget.setCurrentIndex(5)
+                        elif(ch1=='S'):
+                             self.stackedWidget.setCurrentIndex(3)
+                        elif(ch1=='E'):
+                            self.stackedWidget.setCurrentIndex(6)
+                        elif(ch1=='I'):
+                            self.stackedWidget.setCurrentIndex(4)
+                        else:
+                             QMessageBox.information(self,"Login Status", "This user does not have a designation")
+                        break;
+                else:
+                    QMessageBox.information(self,"Login Status", "username or password entered is incorrect")
+                    break;
+                
         else:
-            QMessageBox.warning(self,"Login Status", "Either Username or password is not valid")
+            QMessageBox.warning(self,"Login Status", "Either Username or password is Empty")
         
-        self.comboBox_input_username.clearEditText()
-        self.comboBox_input_password.clearEditText()
-        self.comboBox_input_username.clear()
-        self.comboBox_input_password.clear()
+       # self.comboBox_input_username.clearEditText()
+        self.lineEdit_input_password.clear()
+      #  self.comboBox_input_username.clear()
+      #  self.lineEdit_input_password.clear()
+        
         if( (self.stackedWidget.currentIndex() is not 0) and (self.stackedWidget.currentIndex() is not 1) ):
             self.signout_button.setVisible(True)
             self.changepass_button.setVisible(True)
 
     def f8(self):
-        if(self.comboBox_designation.currentText()=="Admin"):
-            self.comboBox_input_username.addItem("admin")
-            self.comboBox_input_username.addItem("admin1")
-            self.comboBox_input_username.addItem("admin2")
-            self.stackedWidget.setCurrentIndex(1)
+         cur.execute('''SELECT * FROM EMS_DB.Users''' )
+         data = cur.fetchall()
+        # print(data)
+         for row in data:
+             if(row[2]=='Admin'):
+                 if(self.comboBox_designation.currentText()=="Admin"):
+                    self.comboBox_input_username.addItem(row[0])
+                    self.stackedWidget.setCurrentIndex(1)    
+             elif(row[2]=='Receptionist'):
+                
+                 if(self.comboBox_designation.currentText()=="Receptionist"):
+                    self.comboBox_input_username.addItem(row[0])
+                    self.stackedWidget.setCurrentIndex(1) 
+             elif(row[2]=='Staff Manager'):
+                 
+                 if(self.comboBox_designation.currentText()=="Staff Manager"):
+                    self.comboBox_input_username.addItem(row[0])
+                    self.stackedWidget.setCurrentIndex(1) 
+             elif(row[2]=='Event Manager'):
+                
+                 if(self.comboBox_designation.currentText()=="Event Manager"):
+                    self.comboBox_input_username.addItem(row[0])
+                    self.stackedWidget.setCurrentIndex(1) 
+             elif(row[2]=='Inventory Manager'):
+              
+                 if(self.comboBox_designation.currentText()=="Inventory Manager"):
+                    self.comboBox_input_username.addItem(row[0])
+                    self.stackedWidget.setCurrentIndex(1) 
+            
+             else:
+                  QMessageBox.warning(self,"User Type Selection", "choose any one designation")   
     
-        elif(self.comboBox_designation.currentText()=="Receptionist"):
-            self.comboBox_input_username.addItem("receptionist")
-            self.stackedWidget.setCurrentIndex(1)
-    
-        elif(self.comboBox_designation.currentText()=="Staff Manager"):
-            self.comboBox_input_username.addItem("staff")
-            self.stackedWidget.setCurrentIndex(1)
-    
-        elif(self.comboBox_designation.currentText()=="Event Manager"):
-            self.comboBox_input_username.addItem("eventmanager")
-            self.stackedWidget.setCurrentIndex(1)
-    
-        elif(self.comboBox_designation.currentText()=="Inventory Manager"):
-            self.comboBox_input_username.addItem("inventory")
-            self.stackedWidget.setCurrentIndex(1)
-        else:
-            QMessageBox.warning(self,"User Type Selection", "choose any one designation")
+       
 
     def f6(self):
         if(ch=='E'): self.stackedWidget.setCurrentIndex(18)
@@ -297,11 +366,52 @@ class MainApp(QMainWindow , ui):
         ch = 'V'
         self.stackedWidget.setCurrentIndex(25)
     def f26(self):
-        self.comboBox_input_username.clearEditText()
-        self.comboBox_input_password.clearEditText()
-        self.comboBox_input_username.clear()
-        self.comboBox_input_password.clear()
+      #  self.comboBox_input_username.clearEditText()
+        self.lineEdit_input_password.clear()
+     #   self.comboBox_input_username.clear()
+        self.lineEdit_input_password.clear()
         self.stackedWidget.setCurrentIndex(0)
+    def f27(self):
+        self.stackedWidget.setCurrentIndex(24)
+        if(ch=='E'):
+            cur.execute('''select event_id,e_name,v_name,e_date,e_start_time,venue_id,location,c_id
+                            from event_schedule natural join venue natural join event''' )
+            data=cur.fetchall()
+            headerdata =["Event Id","Event Name","Venue Name","Event Date","Event Start Time","Venue Id","Location","Client Id"]
+            tablemodel = MyTableModel(data, headerdata ,self)
+            tableview = self.ViewTable
+            tableview.setModel(tablemodel)
+                                            
+            layout = QVBoxLayout(self)
+            layout.addWidget(tableview)
+            self.setLayout(layout)
+        
+        elif(ch=='I'):
+            cur.execute('''select *
+                           from tech_req;''' )
+        elif(ch=='S'):
+            cur.execute('''select *
+                           from staff natural join ca_contact_details natural join ca_salary_details
+                           UNION
+                           select *
+                           from staff natural join p_contact_details natural join p_salary_details;''' )
+        elif(ch=='V'):
+            cur.execute('''select *
+                            from event_schedule natural join venue''' )
+        elif(ch=='C'):
+            cur.execute('''select *
+                           from client natural join c_contact_details natural join conference_info
+                           UNION
+                           select *
+                           from client natural join s_contact_details natural join seminar_info
+                           UNION
+                           select *
+                           from client natural join w_contact_details natural join wedding_info;''' )
+        elif(ch=='U'):
+            cur.execute('''select * from Users''' )
+        else:
+            QMessageBox.warning(self,"ERROR", "Error")
+        
 #----------------------------------------------------------------------------------------------------------------------------
 # def main():
 #    app = QApplication(sys.argv)
@@ -310,5 +420,6 @@ class MainApp(QMainWindow , ui):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    ConnectDatabase()
     window = start()
     app.exec_()
