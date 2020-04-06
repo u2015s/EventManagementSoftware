@@ -10,7 +10,7 @@ from xlsxwriter import *
 
 
 
-ui,_ = loadUiType('s1_designation.ui')
+ui,_ = loadUiType('emsgui.ui')
 
 
 def start():
