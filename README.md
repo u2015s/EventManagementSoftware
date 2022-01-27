@@ -10,7 +10,7 @@ This software can be used by many others apart from the event manager or organiz
 [Crowdfunding Website](https://crowdfundingweb.herokuapp.com/) -->
 
 ## Features
-
+Users can Add, Update, Delete, View, Print Information regarding the inventory, staff, events, venue and clients.
 
 ## Tech Stack
 
