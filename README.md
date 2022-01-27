@@ -1,7 +1,9 @@
 # Event Management Software 📱
 
 ## Description
-Event Management Software is a software to manage events
+This software is an Event Management System(EMS) that will help Event Managers /Event Organizers, Staff managers, etc  in an Event Planning Company to manage events efficiently. If there are many events like weddings, conferences, seminars being conducted on different venues on the same date then it will be difficult to manage this situation manually. So this system will help in keeping the record of events their date and venue. Also which staff member is allotted to which event and keep track of different technical and non-technical requirements needed during an event. This will thus increase productivity and efficiency.
+
+This software can be used by many others apart from the event manager or organizer. This may include a person who is in charge of managing the staff. This software is also helpful for managing the catering service. 
 
 <!-- 
 ## Link
