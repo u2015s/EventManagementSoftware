@@ -22,12 +22,13 @@ This software can be used by many others apart from the event manager or organiz
 ## Screenshots
 <!-- ![alt text](https://user-images.githubusercontent.com/43993645/117760086-a160e680-b242-11eb-8ca3-aed0a1a5b38c.png "Home 1") -->
 
-<img src="https://user-images.githubusercontent.com/43993645/117760086-a160e680-b242-11eb-8ca3-aed0a1a5b38c.png" width="30%" height="100%">
+<!-- <img src="https://user-images.githubusercontent.com/43993645/117760086-a160e680-b242-11eb-8ca3-aed0a1a5b38c.png" width="30%" height="100%">
+ -->
+![Select Designation](https://user-images.githubusercontent.com/43993645/151360560-eedb7d77-bc74-47d9-87a0-637de49d9ab9.png)
+![Sign In](https://user-images.githubusercontent.com/43993645/151360551-c3133079-4cc8-4661-bc4c-dc2ed609bf3d.png)
+![Select Table](https://user-images.githubusercontent.com/43993645/151360529-05ad2769-fdff-41bf-9b89-a2492e2f0071.png)
+![Select Option](https://user-images.githubusercontent.com/43993645/151360508-528f64dc-0792-4274-98e2-f1ae050bdc19.png)
+![Add Event](https://user-images.githubusercontent.com/43993645/151360578-0f12cbdd-9ef0-440a-b53c-1d4d37cedf8d.png)
+![Update Event](https://user-images.githubusercontent.com/43993645/151360499-5610d789-840f-43da-864f-3ac68951048d.png)
+![View Table](https://user-images.githubusercontent.com/43993645/151360564-e25ce648-0a71-40ee-8253-d565107dcf79.png)
 
-<img src="https://user-images.githubusercontent.com/43993645/117760295-09173180-b243-11eb-8a55-2edefca51a9a.png" width="30%" height="100%">
-
-<img src="https://user-images.githubusercontent.com/43993645/117760350-1e8c5b80-b243-11eb-96af-e85801cef7e3.png" width="30%" height="100%">
-
-<img src="https://user-images.githubusercontent.com/43993645/117760424-3a8ffd00-b243-11eb-9873-c322c581beea.png" width="30%" height="100%">
-
-<img src="https://user-images.githubusercontent.com/43993645/117760489-57c4cb80-b243-11eb-8ba9-213c3955d631.png" width="30%" height="100%">
