@@ -18,6 +18,8 @@ Users can Add, Update, Delete, View, Print Information regarding the inventory, 
 * SQL
 * Qt Designer
 
+## Architecture Diagram
+![unnamed](https://user-images.githubusercontent.com/43993645/160078105-8ba0710a-c43f-429b-839d-4648ae969a56.jpg)
 
 ## Screenshots
 <!-- ![alt text](https://user-images.githubusercontent.com/43993645/117760086-a160e680-b242-11eb-8ca3-aed0a1a5b38c.png "Home 1") -->
